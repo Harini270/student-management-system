@@ -1,0 +1,67 @@
+const express = require("express");
+
+const db = require("../db");
+
+const verifyToken =
+    require("../middleware/authMiddleware");
+
+const router = express.Router();
+
+
+// ADD STUDENT
+router.post("/", verifyToken, (req, res) => {
+
+    const {
+        student_name,
+        department,
+        year,
+        register_number,
+        email
+    } = req.body;
+
+    const sql =
+        `INSERT INTO students
+        (student_name, department, year,
+        register_number, email)
+        VALUES (?, ?, ?, ?, ?)`;
+
+    db.query(
+        sql,
+        [
+            student_name,
+            department,
+            year,
+            register_number,
+            email
+        ],
+        (err, result) => {
+
+            if (err) {
+                return res.status(500).json(err);
+            }
+
+            res.json({
+                message: "Student Added"
+            });
+        }
+    );
+});
+
+
+// GET STUDENTS
+router.get("/", verifyToken, (req, res) => {
+
+    db.query(
+        "SELECT * FROM students",
+        (err, result) => {
+
+            if (err) {
+                return res.status(500).json(err);
+            }
+
+            res.json(result);
+        }
+    );
+});
+
+module.exports = router;
