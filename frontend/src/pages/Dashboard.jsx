@@ -79,7 +79,7 @@ function Dashboard() {
                     marginBottom: "30px"
                 }}
             >
-                Student Management Dashboard
+                Student Management Dashboard - Git Practice
             </h1>
 
             <div
