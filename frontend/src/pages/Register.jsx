@@ -24,18 +24,24 @@ function Register() {
     };
 
     const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        e.preventDefault();
-
-        await API.post(
-            "/auth/register",
-            formData
-        );
+    try {
+        const res = await API.post("/auth/register", formData);
 
         alert("Registration Successful");
-
         navigate("/");
-    };
+
+    } catch (err) {
+        console.error(err);
+
+        if (err.response) {
+            alert(err.response.data.message || JSON.stringify(err.response.data));
+        } else {
+            alert("Cannot connect to backend");
+        }
+    }
+};
 
     return (
 
