@@ -23,7 +23,16 @@ router.post("/register", async (req, res) => {
         (err, result) => {
 
             if (err) {
-                return res.status(500).json(err);
+
+                if (err.code === "ER_DUP_ENTRY") {
+                    return res.status(409).json({
+                        message: "Email already registered"
+                    });
+                }
+
+                return res.status(500).json({
+                    message: "Registration failed"
+                });
             }
 
             res.json({
